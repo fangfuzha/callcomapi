@@ -1,0 +1,37 @@
+[package]
+name = "callcomapi_macros"
+version = "0.1.0"
+edition = "2024"
+description = "Procedural macros for Simplify comapi calls (see README.md)"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+license-file = "../LICENSE.md"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1"
+syn = { version = "2", features = ["full"] }
+quote = "1"
+futures = "0.3"
+windows = { version = "0.62", features = [
+  "Win32_System_Com",
+  "Win32_UI_Shell",
+  "Win32_System_Wmi",
+  "Win32_System_Rpc",
+  "Win32_Foundation",
+] }
+callcomapi_runtime = { path = "../callcomapi_runtime", version = "0.1" }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+futures = "0.3"
+windows = { version = "0.62", features = [
+  "Win32_System_Com",
+  "Win32_UI_Shell",
+  "Win32_Foundation",
+  "Win32_System_Wmi",
+  "Win32_System_Rpc",
+  "Win32_System_Ole",
+] }

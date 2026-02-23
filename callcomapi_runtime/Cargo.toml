@@ -1,0 +1,12 @@
+[package]
+name = "callcomapi_runtime"
+version = "0.1.0"
+edition = "2024"
+description = "Runtime support for callcomapi_macros (see README.md)"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+license-file = "../LICENSE.md"
+
+[dependencies]
+futures = "0.3"
+windows = { version = "0.62", features = ["Win32_System_Com"] }

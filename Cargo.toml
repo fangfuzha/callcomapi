@@ -1,0 +1,3 @@
+[workspace]
+resolver = "3"
+members = ["callcomapi_macros", "callcomapi_runtime"]

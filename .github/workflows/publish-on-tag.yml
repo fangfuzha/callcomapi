@@ -1,0 +1,43 @@
+name: Publish Crates on Tag
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch: {}
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry and git
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Install cargo-workspaces
+        run: |
+          if (Test-Path "$env:USERPROFILE\.cargo\bin\cargo-workspaces.exe") {
+            Write-Host "cargo-workspaces already installed"
+          } elseif (Test-Path "$env:USERPROFILE\.cargo\bin\cargo-workspaces") {
+            Write-Host "cargo-workspaces already installed"
+          } else {
+            cargo install cargo-workspaces
+          }
+
+      - name: Publish workspace crates
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo workspaces publish --from-git --allow-dirty --yes
