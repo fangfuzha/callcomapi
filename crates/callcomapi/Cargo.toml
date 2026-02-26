@@ -8,6 +8,10 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/fangfuzha/callcomapi"
 documentation = "https://docs.rs/callcomapi"
 
+[package.metadata.docs.rs]
+default-target = "x86_64-pc-windows-msvc"
+targets = ["x86_64-pc-windows-msvc"]
+
 [dependencies]
 callcomapi_macros = { path = "../callcomapi_macros", version = "0.1.3" }
 callcomapi_runtime = { path = "../callcomapi_runtime", version = "0.1.3" }

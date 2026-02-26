@@ -8,6 +8,10 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/fangfuzha/callcomapi"
 documentation = "https://docs.rs/callcomapi_macros"
 
+[package.metadata.docs.rs]
+default-target = "x86_64-pc-windows-msvc"
+targets = ["x86_64-pc-windows-msvc"]
+
 [lib]
 proc-macro = true
 
