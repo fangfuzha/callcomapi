@@ -1,5 +1,7 @@
 # callcomapi
 
+[![crates.io](https://img.shields.io/crates/v/callcomapi.svg)](https://crates.io/crates/callcomapi)
+
 `callcomapi` 是一个简化从 Rust 调用 Windows COM API 的库。它提供了一些过程宏，用于管理 COM 的初始化、反初始化以及线程分发。
 
 ## 特性
@@ -35,7 +37,12 @@ fn on_bg_thread() {
 
 ## 示例
 
-请参阅 `examples/` 目录：
+请参阅 [`examples/`](examples/) 目录：
 
-- `with_com.rs`: 基础用法
-- `com_thread.rs`: 跨线程调用
+- [`with_com.rs`](examples/with_com.rs): 基础用法
+- [`com_thread.rs`](examples/com_thread.rs): 跨线程调用
+
+## 实现 crates
+
+- **[callcomapi_macros](https://crates.io/crates/callcomapi_macros)**:提供 `#[with_com]` 和 `#[com_thread]` 宏，以简化 Windows COM 的开发工作。
+- **[callcomapi_runtime](https://crates.io/crates/callcomapi_runtime)**: 实现了 `callcomapi_macros` 所需的后台线程管理、消息传递

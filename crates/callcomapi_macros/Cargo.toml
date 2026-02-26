@@ -1,6 +1,6 @@
 [package]
 name = "callcomapi_macros"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 description = "Procedural macros for Simplify comapi calls"
 readme = "README.md"
@@ -23,7 +23,7 @@ windows = { version = "0.62", features = [
   "Win32_System_Rpc",
   "Win32_Foundation",
 ] }
-callcomapi_runtime = { path = "../callcomapi_runtime", version = "0.1.1" }
+callcomapi_runtime = { path = "../callcomapi_runtime", version = "0.1.2" }
 
 [dev-dependencies]
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
