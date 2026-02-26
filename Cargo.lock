@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "callcomapi_macros"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "callcomapi_runtime",
  "futures",
@@ -17,7 +17,7 @@ dependencies = [
 
 [[package]]
 name = "callcomapi_runtime"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "futures",
  "windows",
