@@ -4,11 +4,6 @@
 
 pub use callcomapi_macros::{com_thread, with_com};
 
-#[doc(hidden)]
-pub mod __private {
-    pub use callcomapi_runtime as runtime;
-}
-
 /// Common types and traits for COM operations.
 pub mod prelude {
     pub use crate::com_thread;
