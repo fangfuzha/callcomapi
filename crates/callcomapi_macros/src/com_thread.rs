@@ -92,9 +92,9 @@ pub fn inner_com_thread(attr: TokenStream, item: TokenStream) -> TokenStream {
 
     // map normalized attribute to runtime enum
     let runtime_model_token = if model_kind_str == "MTA" {
-        quote! { ::callcomapi_runtime::ComModel::MTA }
+        quote! { ::callcomapi::__runtime::ComModel::MTA }
     } else {
-        quote! { ::callcomapi_runtime::ComModel::STA }
+        quote! { ::callcomapi::__runtime::ComModel::STA }
     };
 
     // generate wrapper that delegates to runtime; parameters are captured
@@ -103,8 +103,8 @@ pub fn inner_com_thread(attr: TokenStream, item: TokenStream) -> TokenStream {
         quote! {
             #vis #sig {
                 #compile_time_checks
-                ::callcomapi_runtime::call_async(#runtime_model_token, move || {
-                    ::callcomapi_runtime::block_on(async move { #block })
+                ::callcomapi::__runtime::call_async(#runtime_model_token, move || {
+                    ::callcomapi::__runtime::block_on(async move { #block })
                 }).await
             }
         }
@@ -112,7 +112,7 @@ pub fn inner_com_thread(attr: TokenStream, item: TokenStream) -> TokenStream {
         quote! {
             #vis #sig {
                 #compile_time_checks
-                ::callcomapi_runtime::call_sync(#runtime_model_token, move || { (|| #block)() })
+                ::callcomapi::__runtime::call_sync(#runtime_model_token, move || { (|| #block)() })
             }
         }
     };
