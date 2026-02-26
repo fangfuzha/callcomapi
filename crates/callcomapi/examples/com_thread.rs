@@ -1,4 +1,4 @@
-use callcomapi_macros::com_thread;
+use callcomapi::prelude::com_thread;
 use std::thread;
 
 /// Demonstrates the `#[com_thread]` macro. It creates a background thread on first call,

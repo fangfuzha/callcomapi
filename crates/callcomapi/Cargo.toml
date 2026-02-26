@@ -1,0 +1,21 @@
+[package]
+name = "callcomapi"
+version = "0.1.1"
+edition = "2024"
+description = "A facade crate for callcomapi, simplifying Use of macros."
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/fangfuzha/callcomapi"
+documentation = "https://docs.rs/callcomapi"
+
+[dependencies]
+callcomapi_macros = { path = "../callcomapi_macros", version = "0.1.1" }
+callcomapi_runtime = { path = "../callcomapi_runtime", version = "0.1.1" }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+windows = { version = "0.62", features = [
+  "Win32_System_Com",
+  "Win32_System_Wmi",
+  "Win32_Foundation",
+] }

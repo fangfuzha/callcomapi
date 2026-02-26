@@ -31,11 +31,11 @@ async fn test_sync_then_async_interop() {
     assert_eq!(res_async, 15);
     println!("Async task finished on thread: {:?}", tid_async);
 
-    // Under the current implementation each function has its own static OnceLock,
-    // so they run on different background threads.
-    assert_ne!(
+    // Runtime allocates one background thread per COM model (STA/MTA).
+    // Both sync and async tasks with the same model share the same thread.
+    assert_eq!(
         tid_sync, tid_async,
-        "Currently, sync and async tasks should run on different threads as the static is local to the function"
+        "Sync and async tasks with the same COM model should run on the same background thread"
     );
     assert_ne!(
         tid_sync,

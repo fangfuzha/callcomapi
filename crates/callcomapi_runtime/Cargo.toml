@@ -2,7 +2,7 @@
 name = "callcomapi_runtime"
 version = "0.1.1"
 edition = "2024"
-description = "Runtime support for callcomapi_macros (see README.md)"
+description = "Runtime support for callcomapi_macros"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/fangfuzha/callcomapi"

@@ -8,6 +8,40 @@ pub enum ComModel {
     MTA,
 }
 
+/// Helper for `with_com` macro to ensure COM cleanup
+pub struct ComGuard;
+
+impl Drop for ComGuard {
+    fn drop(&mut self) {
+        unsafe {
+            windows::Win32::System::Com::CoUninitialize();
+        }
+    }
+}
+
+/// Initialize COM and return a guard that will uninitialize on drop.
+///
+/// # Safety
+/// This function calls CoInitializeEx internally.
+pub unsafe fn init_com(model: ComModel) -> ComGuard {
+    use windows::Win32::System::Com::{
+        COINIT_APARTMENTTHREADED, COINIT_MULTITHREADED, CoInitializeEx,
+    };
+    let mode = match model {
+        ComModel::STA => COINIT_APARTMENTTHREADED,
+        ComModel::MTA => COINIT_MULTITHREADED,
+    };
+    unsafe {
+        let _ = CoInitializeEx(None, mode);
+    }
+    ComGuard
+}
+
+/// Re-export block_on for macro usage
+pub fn block_on<F: std::future::Future>(future: F) -> F::Output {
+    futures::executor::block_on(future)
+}
+
 trait Task: Send {
     fn run(self: Box<Self>) -> Box<dyn Any + Send>;
 }

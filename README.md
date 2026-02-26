@@ -1,74 +1,76 @@
 # callcomapi
 
-callcomapi is a small workspace that provides two cooperating crates to simplify calling Windows COM APIs from Rust:
+callcomapi is a small library that makes it easier to call Windows COM APIs from Rust. It
+provides a single facade crate that automatically handles COM initialization, uninitialization,
+and thread management via procedural macros.
 
-- `callcomapi_macros` — a procedural macro crate providing `#[with_com]` and `#[com_thread]` helpers to automatically initialize/uninitialize COM and run functions on a dedicated COM thread.
-- `callcomapi_runtime` — a runtime helper library used by the macros that manages background COM threads, message passing, and task execution.
+## Key features
 
-Goals
+- **callcomapi** – the single entry-point crate that exports all macros and runtime support.
+- `#[with_com]` – automatically initializes/uninitializes COM for the duration of a function.
+- `#[com_thread]` – run sync or async functions on a dedicated background COM thread.
 
-- Reduce boilerplate for COM initialization and cleanup.
-- Provide a safe, ergonomic way to run both sync and async code on threads pre-initialized for a target COM apartment model (STA/MTA).
-- Centralize thread/handle management in a runtime crate so macros remain lightweight.
+## Quick start
 
-Quick start
+1. Add the dependency to your `Cargo.toml`:
 
-1. Add the crates as workspace members (already done in this repo). From your project include the macros crate as a dependency in `Cargo.toml`.
+```toml
+[dependencies]
+callcomapi = { version = "0.1" }
+```
 
-2. Use the macros in your code:
+2. Use it in code:
 
 ```rust
-use callcomapi_macros::{with_com, com_thread};
+use callcomapi::prelude::*;
 
 #[with_com]
 fn example_with_com() {
-    // COM is initialized Automatically for the duration of this function
+    // COM is initialized automatically for the scope of this function
 }
 
 #[com_thread]
 fn run_on_com_thread(x: i32) -> i32 {
-    // Runs on a background thread with COM initialized (default STA)
+    // runs on a background COM thread (STA by default)
     x * 2
 }
 
 #[com_thread(MTA)]
 async fn run_on_mta_thread(x: String) -> String {
-    // Runs on a background thread initialized for MTA
+    // runs on a background MTA thread
     x.to_uppercase()
 }
 ```
 
-Examples
+## Design advantages
 
-See the `callcomapi_macros/examples` folder for working examples:
+- **Single import**: just depend on `callcomapi` and you get macros and runtime without pulling in
+  multiple crates.
+- **Less boilerplate**: automatic COM lifecycle management.
+- **Thread handling**: centralized control of background COM threads ensures tasks run in the correct
+  apartment model.
+- `callcomapi_runtime` keeps a tiny pool (one thread per apartment) and dispatches tasks through channels.
+- Tasks must be `Send + 'static` since arguments/returns cross thread boundaries.
+- The runtime retries once if a COM thread unexpectedly exits and recreates it.
 
-- `with_com.rs` — shows using `#[with_com]` to scope COM lifetime.
-- `com_thread.rs` — demonstrates `#[com_thread]` for sync and async functions and different apartment models.
-
-Design notes
-
-- Macros generate lightweight wrappers that delegate execution to `callcomapi_runtime`.
-- `callcomapi_runtime` maintains a small pool (one thread per COM model) and delivers tasks via channels.
-- Tasks must be `Send + 'static` because parameters and return values move across thread boundaries.
-- Runtime retries sending a task once if the background thread has died unexpectedly and recreates the thread.
-
-Building and testing
+### Building and testing
 
 From the repository root:
 
 ```powershell
-# build workspace
+# build the workspace
 cargo build
 
 # run tests for the macro crate
 cargo test -p callcomapi_macros
 ```
 
-Notes and next steps
+### Notes and future work
 
-- The repository aims to be minimal and platform-specific (Windows COM). The `windows` crate is used for COM APIs.
-- If you want more robust error handling (avoid panics on send failures), we can change the runtime APIs to return `Result` and adjust the macros accordingly.
+- This repo is intentionally minimal and Windows-specific. It uses the `windows` crate for COM
+  APIs.
+- For more robust error handling (avoiding panics on send failures), the runtime APIs could be changed to return a `Result` and the macros updated accordingly.
 
-License
+## License
 
 MIT

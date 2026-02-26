@@ -1,4 +1,4 @@
-use callcomapi_macros::with_com;
+use callcomapi::prelude::with_com;
 use windows::Win32::System::Com::{CLSCTX_INPROC_SERVER, CoCreateInstance};
 use windows::Win32::System::Wmi::{IWbemLocator, WbemLocator};
 use windows::core::BSTR;
