@@ -1,43 +1,41 @@
 # callcomapi
 
-`callcomapi` is a crate that simplifies calling Windows COM APIs from Rust. It provides
-procedural macros that manage COM initialization, uninitialization, and thread dispatch.
+`callcomapi` 是一个简化从 Rust 调用 Windows COM API 的库。它提供了一些过程宏，用于管理 COM 的初始化、反初始化以及线程分发。
 
-## Features
+## 特性
 
-- **Single dependency**: import only `callcomapi` to get macros and runtime support.
-- `#[with_com]` – initialize and uninitialize COM around a function.
-- `#[com_thread]` – schedule functions on a dedicated background COM thread, for both sync and
-  async code.
+- **单一依赖**：只需导入 `callcomapi` 即可获得宏和运行时支持。
+- `#[with_com]` – 在函数周围初始化和反初始化 COM。
+- `#[com_thread]` – 将函数调度到专用的后台 COM 线程上执行，支持同步和异步代码。
 
-## Quick start
+## 快速开始
 
-Add to `Cargo.toml`:
+在 `Cargo.toml` 中添加：
 
 ```toml
 [dependencies]
 callcomapi = "0.1"
 ```
 
-Example usage:
+使用示例：
 
 ```rust
 use callcomapi::prelude::*;
 
 #[with_com]
 fn example() {
-    // COM is initialized automatically and uninitialized on scope exit.
+    // COM 将自动初始化，并在退出作用域时反初始化。
 }
 
 #[com_thread]
 fn on_bg_thread() {
-    // executed on a dedicated STA thread.
+    // 在专用的 STA(默认) 线程(可重用)上执行。
 }
 ```
 
-## Examples
+## 示例
 
-See the `examples/` directory:
+请参阅 `examples/` 目录：
 
-- `with_com.rs`: basic usage
-- `com_thread.rs`: cross-thread invocation
+- `with_com.rs`: 基础用法
+- `com_thread.rs`: 跨线程调用

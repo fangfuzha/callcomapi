@@ -1,76 +1,71 @@
 # callcomapi
 
-callcomapi is a small library that makes it easier to call Windows COM APIs from Rust. It
-provides a single facade crate that automatically handles COM initialization, uninitialization,
-and thread management via procedural macros.
+`callcomapi` 是一个简化从 Rust 调用 Windows COM API 的库。它提供了一个外观 crate，通过过程宏自动处理 COM 的初始化、反初始化以及线程管理。
 
-## Key features
+## 主要特性
 
-- **callcomapi** – the single entry-point crate that exports all macros and runtime support.
-- `#[with_com]` – automatically initializes/uninitializes COM for the duration of a function.
-- `#[com_thread]` – run sync or async functions on a dedicated background COM thread.
+- **callcomapi** – 统一入口 crate，导出所有宏和运行时支持。
+- `#[with_com]` – 在函数执行期间自动初始化/反初始化 COM。
+- `#[com_thread]` – 在专用的后台 COM 线程上运行同步或异步函数。
 
-## Quick start
+## 快速开始
 
-1. Add the dependency to your `Cargo.toml`:
+1. 在 `Cargo.toml` 中添加依赖：
 
 ```toml
 [dependencies]
 callcomapi = { version = "0.1" }
 ```
 
-2. Use it in code:
+2. 在代码中使用：
 
 ```rust
 use callcomapi::prelude::*;
 
 #[with_com]
 fn example_with_com() {
-    // COM is initialized automatically for the scope of this function
+    // COM 将在此函数作用域内自动初始化
 }
 
 #[com_thread]
 fn run_on_com_thread(x: i32) -> i32 {
-    // runs on a background COM thread (STA by default)
+    // 在后台 COM 线程运行（默认为 STA）
     x * 2
 }
 
 #[com_thread(MTA)]
 async fn run_on_mta_thread(x: String) -> String {
-    // runs on a background MTA thread
+    // 在后台 MTA 线程运行
     x.to_uppercase()
 }
 ```
 
-## Design advantages
+## 设计优势
 
-- **Single import**: just depend on `callcomapi` and you get macros and runtime without pulling in
-  multiple crates.
-- **Less boilerplate**: automatic COM lifecycle management.
-- **Thread handling**: centralized control of background COM threads ensures tasks run in the correct
-  apartment model.
-- `callcomapi_runtime` keeps a tiny pool (one thread per apartment) and dispatches tasks through channels.
-- Tasks must be `Send + 'static` since arguments/returns cross thread boundaries.
-- The runtime retries once if a COM thread unexpectedly exits and recreates it.
+- **单一导入**：只需依赖 `callcomapi` 即可获得宏和运行时，无需引入多个 crate。
+- **减少样板代码**：自动管理 COM 生命周期。
+- **线程处理**：对后台 COM 线程的集中控制，确保任务在正确的套间模型（Apartment Model）中运行。
+- `callcomapi_runtime` 为每个套间模型维持一个小规模的线程池（每个模型一个线程），并通过通道分发任务。
+- 任务必须满足 `Send + 'static` 约束，因为参数和返回值需要跨线程边界移动。
+- 如果 COM 线程意外退出，运行时会尝试重新创建线程并重试一次任务发送。
 
-### Building and testing
+### 构建与测试
 
-From the repository root:
+在仓库根目录下执行：
 
 ```powershell
-# build the workspace
+# 构建整个工作区
 cargo build
 
-# run tests for the macro crate
+# 运行宏 crate 的测试
 cargo test -p callcomapi_macros
 ```
 
-### Notes and future work
+### 说明与后续工作
 
-- This repo is intentionally minimal and Windows-specific. It uses the `windows` crate for COM
-  APIs.
-- For more robust error handling (avoiding panics on send failures), the runtime APIs could be changed to return a `Result` and the macros updated accordingly.
+- 本仓库专注于 Windows 平台下的 COM API，使用 `windows` crate 实现。
+- 为了实现更健壮的错误处理（避免发送失败时发生 panic），后续可以将运行时 API 修改为返回 `Result` 并相应调整宏实现。
 
-## License
+## 开源协议
 
 MIT

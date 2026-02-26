@@ -1,13 +1,10 @@
 # callcomapi_macros
 
-> **Note**: This is the internal procedural macro crate for `callcomapi`. You should normally
-> depend on the higher-level [callcomapi](https://crates.io/crates/callcomapi) crate.
+> **注意**：这是 `callcomapi` 的内部过程宏 crate。通常情况下，你应该依赖更高层级的 [callcomapi](https://crates.io/crates/callcomapi) crate。
 
-`callcomapi_macros` provides the `#[with_com]` and `#[com_thread]` macros to simplify working
-with Windows COM.
+`callcomapi_macros` 提供了 `#[with_com]` 和 `#[com_thread]` 宏，以简化 Windows COM 的开发工作。
 
-## Macros
+## 宏
 
-- `#[with_com]`: performs `CoInitializeEx` and `CoUninitialize` around a function scope.
-- `#[com_thread]`: dispatches a function to a dedicated background COM thread; supports both
-  synchronous and asynchronous functions.
+- `#[with_com]`：在函数作用域周围执行 `CoInitializeEx` 和 `CoUninitialize`。
+- `#[com_thread]`：将函数分发到专用的后台 COM 线程执行；支持同步和异步函数。
