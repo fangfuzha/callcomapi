@@ -18,8 +18,10 @@ callcomapi_runtime = { path = "../callcomapi_runtime", version = "0.1.3" }
 
 [dev-dependencies]
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+futures = "0.3"
 windows = { version = "0.62", features = [
   "Win32_System_Com",
   "Win32_System_Wmi",
   "Win32_Foundation",
+  "Win32_System_Rpc",
 ] }

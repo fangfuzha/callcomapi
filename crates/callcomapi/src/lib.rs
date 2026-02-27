@@ -3,6 +3,7 @@
 //! This crate provides a unified entry point for using COM API macros and utilities.
 
 pub use callcomapi_macros::{com_thread, with_com};
+pub use callcomapi_runtime::{ComModel, init_com};
 
 #[doc(hidden)]
 pub use callcomapi_runtime as __runtime;

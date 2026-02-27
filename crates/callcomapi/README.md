@@ -41,6 +41,7 @@ fn on_bg_thread() {
 
 - [`with_com.rs`](examples/with_com.rs): 基础用法
 - [`com_thread.rs`](examples/com_thread.rs): 跨线程调用
+- [`performance_comparison.rs`](examples/performance_comparison.rs): 性能对比测算
 
 ## 实现 crates
 
